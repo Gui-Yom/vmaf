@@ -6,7 +6,8 @@
 // MIT licensed
 //
 
-#include <unistd.h>
+//#include <unistd.h>
+//#include <direct.h>
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>

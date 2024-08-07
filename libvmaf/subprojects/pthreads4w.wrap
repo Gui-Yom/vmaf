@@ -1,0 +1,8 @@
+[wrap-git]
+url = https://github.com/GerHobbelt/pthread-win32.git
+revision = master
+depth = 1
+method = cmake
+
+[provide]
+pthreads4w-3.0.3 = pthreadVC3_dep

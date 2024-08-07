@@ -779,7 +779,7 @@ static void adm_decouple(AdmBuffer *buf, int w, int h, int stride,
 
 static inline uint16_t get_best15_from32(uint32_t temp, int *x)
 {
-    int k = __builtin_clz(temp);    //built in for intel
+    int k = __lzcnt(temp);    //built in for intel
     k = 17 - k;
     temp = (temp + (1 << (k - 1))) >> k;
     *x = k;

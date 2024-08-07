@@ -355,7 +355,7 @@ static int vmaf_bootstrap_predict_score_at_index(
                                         VmafModelCollectionScore *score)
 {
     int err = 0;
-    double scores[model_collection->cnt];
+    double *scores = calloc(model_collection->cnt, sizeof(double));
 
     for (unsigned i = 0; i < model_collection->cnt; i++) {
         // mean, stddev, etc. are calculated on untransformed/unclipped scores
@@ -421,8 +421,7 @@ static int vmaf_bootstrap_predict_score_at_index(
     const char *suffix_stddev = "_stddev";
     const size_t name_sz =
         strlen(model_collection->name) + strlen(suffix_lo) + 1;
-    char name[name_sz];
-    memset(name, 0, name_sz);
+    char *name = calloc(name_sz, sizeof(char));
 
     snprintf(name, name_sz, "%s%s", model_collection->name, suffix_bagging);
     err = vmaf_feature_collector_append(feature_collector, name,
@@ -440,6 +439,8 @@ static int vmaf_bootstrap_predict_score_at_index(
     err |= vmaf_feature_collector_append(feature_collector, name,
                                          score->bootstrap.ci.p95.hi,
                                          index);
+    free(scores);
+    free(name);
     return err;
 }
 

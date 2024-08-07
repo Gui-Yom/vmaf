@@ -1,4 +1,4 @@
-project('libvmaf', ['c', 'cpp'],
+project('libvmaf', ['c', 'cpp', 'cuda'],
     version : '3.0.0',
     default_options : ['c_std=c11',
                        'cpp_std=c++11',
@@ -49,8 +49,15 @@ if not cc.check_header('stdatomic.h')
     endif
 endif
 
+cmake = import('cmake')
+cmake_options = cmake.subproject_options()
+cmake_options.add_cmake_defines({'BUILD_TESTING': false})
+pthreads4w_subp = cmake.subproject('pthreads4w', options: cmake_options)
+pthreads4w_dep = pthreads4w_subp.dependency('pthreadVC3')
+pthreads4w_inc = pthreads4w_subp.include_directories('pthreadVC3')
+
 subdir('include')
 subdir('src')
-subdir('tools')
-subdir('doc')
-subdir('test')
+#subdir('tools')
+#subdir('doc')
+#subdir('test')

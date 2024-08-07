@@ -12,10 +12,14 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
+#ifdef _MSC_VER
+typedef unsigned int mode_t;
+#endif
+
 /*
  * Recursively `mkdir(path, mode)`
  */
 
-int mkdirp(const char *, mode_t );
+int mkdirp(const char *path, mode_t mode);
 
 #endif

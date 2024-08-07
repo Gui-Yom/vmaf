@@ -59,7 +59,7 @@ typedef struct VifStateCuda {
                func_filter1d_16_horizontal_kernel_2_17_9_0,
                func_filter1d_16_horizontal_kernel_2_9_5_1,
                func_filter1d_16_horizontal_kernel_2_5_3_2,
-               func_filter1d_16_horizontal_kernel_2_3_0_3
+               func_filter1d_16_horizontal_kernel_2_3_0_3;
 } VifStateCuda;
 
 typedef struct write_score_parameters_vif {

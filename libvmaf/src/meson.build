@@ -3,7 +3,7 @@ vmaf_soversion = vmaf_api_version_major
 # Build libvmaf
 feature_src_dir = './feature/'
 src_dir = './'
-model_dir = '../../model/'
+model_dir = libvmaf_src_root + './../model/'
 cuda_dir = './cuda/'
 
 vmaf_base_include = include_directories('./', './feature/common')
@@ -278,7 +278,8 @@ if is_nvtx_enabled
 endif
 
 if is_cuda_enabled
-    cuda_inc += include_directories('/usr/local/cuda/include')
+    #cuda_inc += include_directories('/usr/local/cuda/include')
+    cuda_inc += include_directories('C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.5/include')
 
     cuda_cu_sources = {
         'adm_dwt2' : [feature_src_dir + 'cuda/integer_adm/adm_dwt2.cu'],
@@ -296,7 +297,8 @@ if is_cuda_enabled
         cuda_dir + 'ring_buffer.c',
     ]
 
-    cuda_drv_api_dependency = declare_dependency(link_args : ['-lcuda'])
+    cuda_drv_api_dependency = cc.find_library('cuda', dirs: 'C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.5/lib/x64')
+    #cuda_drv_api_dependency = declare_dependency(link_args : ['-lcuda'])
     cuda_rt_api_dependency = dependency('cuda', version : '>=10')
 
     cuda_dependency += cuda_drv_api_dependency
@@ -325,6 +327,7 @@ if is_cuda_enabled
                 '-I', '../include',
                 '-I', '../src/feature',
                 '-I', '../src/' + cuda_dir,
+                '-I', libvmaf_src_root + './subprojects/pthreads4w',
             ]
         )
         ptx_files += {name : [t]}
@@ -350,7 +353,7 @@ if is_cuda_enabled
     cuda_static_lib = static_library(
         'cuda_common_vmaf_lib',
         [cuda_sources, ptx_arrays,],
-        dependencies: [cuda_drv_api_dependency],
+        dependencies: [cuda_drv_api_dependency, pthreads4w_dep],
         include_directories : [
             libvmaf_include,
             vmaf_base_include,
@@ -366,7 +369,11 @@ if is_cuda_enabled
     common_cuda_objects += cuda_static_lib.extract_all_objects()
 endif
 
-thread_lib = dependency('threads')
+#pthreadswin32_lib_dir = libvmaf_src_root + './pthreads-win32/lib/x64'
+#pthreadswin32_lib = cc.find_library('pthreadVC2', dirs: pthreadswin32_lib_dir)
+
+#thread_lib = dependency('threads')
+thread_lib = pthreads4w_dep
 math_lib = cc.find_library('m', required : false)
 
 vmaf_include = include_directories(
@@ -441,7 +448,7 @@ libvmaf_feature_static_lib = static_library(
     'libvmaf_feature',
     libvmaf_feature_sources,
     include_directories : [libvmaf_include, vmaf_include, cuda_dir],
-    dependencies: [stdatomic_dependency, cuda_dependency],
+    dependencies: [stdatomic_dependency, cuda_dependency, pthreads4w_dep],
     objects: common_cuda_objects
 )
 

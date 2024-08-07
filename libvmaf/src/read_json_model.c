@@ -493,10 +493,10 @@ static int model_collection_parse(json_stream *s, VmafModel **model,
     if (!c.name) return -ENOMEM;
 
     const size_t cfg_name_sz = strlen(name) + 5 + 1;
-    char cfg_name[cfg_name_sz];
+    char *cfg_name = calloc(cfg_name_sz, sizeof(char));
 
     const size_t generated_key_sz = 4 + 1;
-    char generated_key[generated_key_sz];
+    char *generated_key = calloc(generated_key_sz, sizeof(char));
 
     unsigned i = 0;
     while (json_peek(s) != JSON_OBJECT_END && !json_get_error(s)) {
@@ -526,6 +526,8 @@ static int model_collection_parse(json_stream *s, VmafModel **model,
         json_skip(s);
     }
 
+    free(cfg_name);
+    free(generated_key);
     free((char*)name);
     if (!(*model_collection)) return -EINVAL;
     return err;

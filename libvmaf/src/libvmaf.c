@@ -881,8 +881,7 @@ int vmaf_score_pooled_model_collection(VmafContext *vmaf,
     const char *suffix_stddev = "_stddev";
     const size_t name_sz =
         strlen(model_collection->name) + strlen(suffix_lo) + 1;
-    char name[name_sz];
-    memset(name, 0, name_sz);
+    char *name = calloc(name_sz, sizeof(char));
 
     snprintf(name, name_sz, "%s%s", model_collection->name, suffix_bagging);
     err |= vmaf_feature_score_pooled(vmaf, name, pool_method,
@@ -904,6 +903,7 @@ int vmaf_score_pooled_model_collection(VmafContext *vmaf,
                                      &score->bootstrap.ci.p95.hi,
                                      index_low, index_high);
 
+    free(name);
     return err;
 }
 

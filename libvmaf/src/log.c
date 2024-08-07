@@ -19,7 +19,8 @@
 #include "libvmaf/libvmaf.h"
 
 #include <stdarg.h>
-#include <unistd.h>
+//#include <unistd.h>
+#include <io.h>
 
 static enum VmafLogLevel vmaf_log_level = VMAF_LOG_LEVEL_INFO;
 static int istty = 0;

@@ -132,6 +132,11 @@ void calculate_motion_score(const VmafPicture* src, VmafCudaBuffer* src_blurred,
     }
 }
 
+static const unsigned char src_motion_score_ptx[] = {
+#include "motion_score.ptx.xxd"
+    , 0
+};
+
 static int init_fex_cuda(VmafFeatureExtractor *fex, enum VmafPixelFormat pix_fmt,
         unsigned bpc, unsigned w, unsigned h)
 {

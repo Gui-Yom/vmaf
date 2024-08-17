@@ -84,6 +84,4 @@ typedef struct vif_accums {
     int64_t den_non_log;
 } vif_accums;
 
-extern unsigned char src_filter1d_ptx[];
-
 #endif /* _FEATURE_VIF_CUDA_H_ */

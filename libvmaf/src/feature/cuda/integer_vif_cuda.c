@@ -91,6 +91,11 @@ static const VmafOption options[] = {
     { 0 }
 };
 
+static const unsigned char src_filter1d_ptx[] = {
+#include "filter1d.ptx.xxd"
+    , 0
+};
+
 static int init_fex_cuda(VmafFeatureExtractor *fex, enum VmafPixelFormat pix_fmt,
         unsigned bpc, unsigned w, unsigned h)
 {
@@ -259,7 +264,7 @@ void filter1d_16(VifStateCuda *s, VifBufferCuda *buf, uint16_t* ref_in, uint16_t
         shift_VP_sq = 16;
         add_shift_round_VP_sq = 32768;
     }
-    
+
     struct uint2 {
         unsigned x ,y;
     } uint2;

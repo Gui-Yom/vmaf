@@ -34,7 +34,7 @@ is_cuda_enabled = get_option('enable_cuda') == true
 is_avx512_enabled = get_option('enable_avx512') == true
 is_nvtx_enabled = get_option('enable_nvtx') == true
 
-if is_nvtx_enabled    
+if is_nvtx_enabled
     cdata.set10('HAVE_NVTX', is_nvtx_enabled)
 endif
 
@@ -336,14 +336,21 @@ if is_cuda_enabled
 
     message('ptx_files = @0@'.format(ptx_files))
 
-    xxd_exe = find_program('xxd')
+    sh = find_program('sh', required: false)
+    if sh.found()
+        command = [sh, '-c', 'C:\\Code\\C\\vmaf\\libvmaf\\scripts\\ptx_to_c.bat', '@INPUT@', '@OUTPUT@']
+    else
+        cmd = find_program('cmd')
+        command = [cmd, '/c', 'C:\\Code\\C\\vmaf\\libvmaf\\scripts\\ptx_to_c.bat', '@INPUT@', '@OUTPUT@']
+    endif
+
     ptx_arrays = []
     foreach name, _ptx : ptx_files
         t = custom_target('ptx_xxd_@0@'.format(name),
-            build_by_default: true,
-            output : ['@PLAINNAME@.c'],
-            input : _ptx,
-            command : [xxd_exe, '--include','@INPUT@', '@OUTPUT@'],
+          build_by_default: true,
+          output : ['@PLAINNAME@.xxd'],
+          input : _ptx,
+          command : command,
         )
         ptx_arrays += t
     endforeach

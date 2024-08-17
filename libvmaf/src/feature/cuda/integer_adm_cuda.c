@@ -1003,6 +1003,27 @@ static inline CUdeviceptr init_index_cuda(int32_t **index, CUdeviceptr data_top,
     return data_top;
 }
 
+static const unsigned char src_adm_dwt2_ptx[] = {
+#include "adm_dwt2.ptx.xxd"
+    , 0
+};
+static const unsigned char src_adm_csf_den_ptx[] = {
+#include "adm_csf_den.ptx.xxd"
+    , 0
+};
+static const unsigned char src_adm_csf_ptx[] = {
+#include "adm_csf.ptx.xxd"
+    , 0
+};
+static const unsigned char src_adm_decouple_ptx[] = {
+#include "adm_decouple.ptx.xxd"
+    , 0
+};
+static const unsigned char src_adm_cm_ptx[] = {
+#include "adm_cm.ptx.xxd"
+    , 0
+};
+
 static int init_fex_cuda(VmafFeatureExtractor *fex, enum VmafPixelFormat pix_fmt,
         unsigned bpc, unsigned w, unsigned h)
 {

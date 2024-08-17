@@ -127,7 +127,7 @@ int vmaf_picture_unref(VmafPicture *pic) {
     const long old_cnt = vmaf_ref_fetch_decrement(pic->ref);
     if (old_cnt == 1) {
         const VmafPicturePrivate *priv = pic->priv;
-        priv->release_picture(pic, priv->cookie);
+        if (priv->release_picture) priv->release_picture(pic, priv->cookie);
         free(pic->priv);
         vmaf_ref_close(pic->ref);
     }
